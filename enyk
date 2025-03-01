@@ -1,0 +1,563 @@
+-- Enyk Executor GUI Script
+-- For use with JJSploit in Roblox
+
+-- Create the main GUI
+local EnykExecutor = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local CloseButton = Instance.new("TextButton")
+local KeySystem = Instance.new("Frame")
+local KeyInput = Instance.new("TextBox")
+local SubmitKey = Instance.new("TextButton")
+local KeyStatus = Instance.new("TextLabel")
+local FeaturesFrame = Instance.new("Frame")
+local AimbotToggle = Instance.new("TextButton")
+local FlyToggle = Instance.new("TextButton")
+local NoclipToggle = Instance.new("TextButton")
+local UnlockGamepassButton = Instance.new("TextButton")
+local KillPlayerFrame = Instance.new("Frame")
+local KillPlayerLabel = Instance.new("TextLabel")
+local KillPlayerInput = Instance.new("TextBox")
+local KillPlayerButton = Instance.new("TextButton")
+local StatusMessage = Instance.new("TextLabel")
+local Credit = Instance.new("TextLabel")
+
+-- Set the correct key
+local correctKey = "enyk"
+local keyVerified = false
+
+-- Variables to track toggle states
+local aimbotEnabled = false
+local flyEnabled = false
+local noclipEnabled = false
+
+-- GUI Properties
+EnykExecutor.Name = "EnykExecutor"
+EnykExecutor.Parent = game:GetService("CoreGui")
+EnykExecutor.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+-- Main Frame
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = EnykExecutor
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.BorderColor3 = Color3.fromRGB(0, 170, 255)
+MainFrame.BorderSizePixel = 2
+MainFrame.Position = UDim2.new(0.5, -175, 0.5, -150)
+MainFrame.Size = UDim2.new(0, 350, 0, 300)
+MainFrame.Visible = false
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+-- Title
+Title.Name = "Title"
+Title.Parent = MainFrame
+Title.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+Title.Size = UDim2.new(1, 0, 0, 30)
+Title.Font = Enum.Font.SourceSansBold
+Title.Text = "Enyk Executor"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 18.0
+
+-- Close Button (X)
+CloseButton.Name = "CloseButton"
+CloseButton.Parent = MainFrame
+CloseButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+CloseButton.Position = UDim2.new(1, -25, 0, 5)
+CloseButton.Size = UDim2.new(0, 20, 0, 20)
+CloseButton.Font = Enum.Font.SourceSansBold
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.TextSize = 14.0
+CloseButton.ZIndex = 2
+
+-- Key System Frame
+KeySystem.Name = "KeySystem"
+KeySystem.Parent = EnykExecutor
+KeySystem.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+KeySystem.BorderColor3 = Color3.fromRGB(0, 170, 255)
+KeySystem.BorderSizePixel = 2
+KeySystem.Position = UDim2.new(0.5, -125, 0.5, -60)
+KeySystem.Size = UDim2.new(0, 250, 0, 120)
+KeySystem.Visible = true
+KeySystem.Active = true
+KeySystem.Draggable = true
+
+-- Key System Close Button
+local KeySystemClose = Instance.new("TextButton")
+KeySystemClose.Name = "KeySystemClose"
+KeySystemClose.Parent = KeySystem
+KeySystemClose.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+KeySystemClose.Position = UDim2.new(1, -25, 0, 5)
+KeySystemClose.Size = UDim2.new(0, 20, 0, 20)
+KeySystemClose.Font = Enum.Font.SourceSansBold
+KeySystemClose.Text = "X"
+KeySystemClose.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeySystemClose.TextSize = 14.0
+KeySystemClose.ZIndex = 2
+
+-- Key Input
+KeyInput.Name = "KeyInput"
+KeyInput.Parent = KeySystem
+KeyInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+KeyInput.BorderColor3 = Color3.fromRGB(0, 170, 255)
+KeyInput.Position = UDim2.new(0.5, -100, 0.3, 0)
+KeyInput.Size = UDim2.new(0, 200, 0, 30)
+KeyInput.Font = Enum.Font.SourceSans
+KeyInput.PlaceholderText = "Enter Key..."
+KeyInput.Text = ""
+KeyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyInput.TextSize = 14.0
+
+-- Submit Key Button
+SubmitKey.Name = "SubmitKey"
+SubmitKey.Parent = KeySystem
+SubmitKey.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+SubmitKey.Position = UDim2.new(0.5, -60, 0.7, 0)
+SubmitKey.Size = UDim2.new(0, 120, 0, 30)
+SubmitKey.Font = Enum.Font.SourceSansBold
+SubmitKey.Text = "Submit Key"
+SubmitKey.TextColor3 = Color3.fromRGB(255, 255, 255)
+SubmitKey.TextSize = 14.0
+
+-- Key Status
+KeyStatus.Name = "KeyStatus"
+KeyStatus.Parent = KeySystem
+KeyStatus.BackgroundTransparency = 1
+KeyStatus.Position = UDim2.new(0, 0, 0, 10)
+KeyStatus.Size = UDim2.new(1, 0, 0, 20)
+KeyStatus.Font = Enum.Font.SourceSans
+KeyStatus.Text = "Enter Key to Access Enyk Executor"
+KeyStatus.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyStatus.TextSize = 14.0
+
+-- Features Frame
+FeaturesFrame.Name = "FeaturesFrame"
+FeaturesFrame.Parent = MainFrame
+FeaturesFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+FeaturesFrame.BorderSizePixel = 0
+FeaturesFrame.Position = UDim2.new(0, 0, 0, 30)
+FeaturesFrame.Size = UDim2.new(1, 0, 1, -30)
+
+-- Aimbot Toggle
+AimbotToggle.Name = "AimbotToggle"
+AimbotToggle.Parent = FeaturesFrame
+AimbotToggle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+AimbotToggle.BorderColor3 = Color3.fromRGB(0, 170, 255)
+AimbotToggle.Position = UDim2.new(0.5, -100, 0.1, 0)
+AimbotToggle.Size = UDim2.new(0, 200, 0, 30)
+AimbotToggle.Font = Enum.Font.SourceSansBold
+AimbotToggle.Text = "Aimbot: OFF"
+AimbotToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+AimbotToggle.TextSize = 14.0
+
+-- Fly Toggle
+FlyToggle.Name = "FlyToggle"
+FlyToggle.Parent = FeaturesFrame
+FlyToggle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+FlyToggle.BorderColor3 = Color3.fromRGB(0, 170, 255)
+FlyToggle.Position = UDim2.new(0.5, -100, 0.2, 0)
+FlyToggle.Size = UDim2.new(0, 200, 0, 30)
+FlyToggle.Font = Enum.Font.SourceSansBold
+FlyToggle.Text = "Fly: OFF"
+FlyToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+FlyToggle.TextSize = 14.0
+
+-- Noclip Toggle
+NoclipToggle.Name = "NoclipToggle"
+NoclipToggle.Parent = FeaturesFrame
+NoclipToggle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+NoclipToggle.BorderColor3 = Color3.fromRGB(0, 170, 255)
+NoclipToggle.Position = UDim2.new(0.5, -100, 0.3, 0)
+NoclipToggle.Size = UDim2.new(0, 200, 0, 30)
+NoclipToggle.Font = Enum.Font.SourceSansBold
+NoclipToggle.Text = "Noclip: OFF"
+NoclipToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+NoclipToggle.TextSize = 14.0
+
+-- Unlock Gamepass Button
+UnlockGamepassButton.Name = "UnlockGamepassButton"
+UnlockGamepassButton.Parent = FeaturesFrame
+UnlockGamepassButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+UnlockGamepassButton.BorderColor3 = Color3.fromRGB(0, 170, 255)
+UnlockGamepassButton.Position = UDim2.new(0.5, -100, 0.4, 0)
+UnlockGamepassButton.Size = UDim2.new(0, 200, 0, 30)
+UnlockGamepassButton.Font = Enum.Font.SourceSansBold
+UnlockGamepassButton.Text = "Unlock All Gamepasses"
+UnlockGamepassButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+UnlockGamepassButton.TextSize = 14.0
+
+-- Kill Player Frame
+KillPlayerFrame.Name = "KillPlayerFrame"
+KillPlayerFrame.Parent = FeaturesFrame
+KillPlayerFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+KillPlayerFrame.BorderColor3 = Color3.fromRGB(0, 170, 255)
+KillPlayerFrame.BorderSizePixel = 1
+KillPlayerFrame.Position = UDim2.new(0.5, -125, 0.55, 0)
+KillPlayerFrame.Size = UDim2.new(0, 250, 0, 80)
+
+-- Kill Player Label
+KillPlayerLabel.Name = "KillPlayerLabel"
+KillPlayerLabel.Parent = KillPlayerFrame
+KillPlayerLabel.BackgroundTransparency = 1
+KillPlayerLabel.Position = UDim2.new(0, 0, 0, 5)
+KillPlayerLabel.Size = UDim2.new(1, 0, 0, 20)
+KillPlayerLabel.Font = Enum.Font.SourceSansBold
+KillPlayerLabel.Text = "Kill Player"
+KillPlayerLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+KillPlayerLabel.TextSize = 14.0
+
+-- Kill Player Input
+KillPlayerInput.Name = "KillPlayerInput"
+KillPlayerInput.Parent = KillPlayerFrame
+KillPlayerInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+KillPlayerInput.BorderColor3 = Color3.fromRGB(0, 170, 255)
+KillPlayerInput.Position = UDim2.new(0.5, -100, 0.4, 0)
+KillPlayerInput.Size = UDim2.new(0, 200, 0, 25)
+KillPlayerInput.Font = Enum.Font.SourceSans
+KillPlayerInput.PlaceholderText = "Enter Player Name..."
+KillPlayerInput.Text = ""
+KillPlayerInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+KillPlayerInput.TextSize = 14.0
+
+-- Kill Player Button
+KillPlayerButton.Name = "KillPlayerButton"
+KillPlayerButton.Parent = KillPlayerFrame
+KillPlayerButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+KillPlayerButton.Position = UDim2.new(0.5, -60, 0.75, 0)
+KillPlayerButton.Size = UDim2.new(0, 120, 0, 25)
+KillPlayerButton.Font = Enum.Font.SourceSansBold
+KillPlayerButton.Text = "Kill Player"
+KillPlayerButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+KillPlayerButton.TextSize = 14.0
+
+-- Status Message
+StatusMessage.Name = "StatusMessage"
+StatusMessage.Parent = FeaturesFrame
+StatusMessage.BackgroundTransparency = 1
+StatusMessage.Position = UDim2.new(0, 0, 0.85, 0)
+StatusMessage.Size = UDim2.new(1, 0, 0, 20)
+StatusMessage.Font = Enum.Font.SourceSans
+StatusMessage.Text = ""
+StatusMessage.TextColor3 = Color3.fromRGB(255, 255, 255)
+StatusMessage.TextSize = 14.0
+
+-- Credit
+Credit.Name = "Credit"
+Credit.Parent = FeaturesFrame
+Credit.BackgroundTransparency = 1
+Credit.Position = UDim2.new(0, 0, 0.9, 0)
+Credit.Size = UDim2.new(1, 0, 0, 20)
+Credit.Font = Enum.Font.SourceSansItalic
+Credit.Text = "Enyk Executor v1.0"
+Credit.TextColor3 = Color3.fromRGB(150, 150, 150)
+Credit.TextSize = 12.0
+
+-- Functions
+local function showStatus(message, color)
+    StatusMessage.Text = message
+    StatusMessage.TextColor3 = color or Color3.fromRGB(255, 255, 255)
+    
+    spawn(function()
+        wait(2)
+        StatusMessage.Text = ""
+    end)
+end
+
+-- Aimbot Function
+local function toggleAimbot()
+    aimbotEnabled = not aimbotEnabled
+    AimbotToggle.Text = "Aimbot: " .. (aimbotEnabled and "ON" or "OFF")
+    AimbotToggle.BackgroundColor3 = aimbotEnabled and Color3.fromRGB(0, 170, 0) or Color3.fromRGB(50, 50, 50)
+    
+    if aimbotEnabled then
+        -- Simple aimbot implementation
+        _G.AimbotEnabled = true
+        
+        spawn(function()
+            local Players = game:GetService("Players")
+            local LocalPlayer = Players.LocalPlayer
+            local Camera = workspace.CurrentCamera
+            
+            while _G.AimbotEnabled do
+                wait(0.1)
+                
+                local closestPlayer = nil
+                local shortestDistance = math.huge
+                
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("Humanoid") and 
+                       player.Character.Humanoid.Health > 0 and player.Character:FindFirstChild("HumanoidRootPart") then
+                        
+                        local pos = Camera:WorldToViewportPoint(player.Character.HumanoidRootPart.Position)
+                        local magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)).magnitude
+                        
+                        if magnitude < shortestDistance then
+                            closestPlayer = player
+                            shortestDistance = magnitude
+                        end
+                    end
+                end
+                
+                if closestPlayer and closestPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                    Camera.CFrame = CFrame.new(Camera.CFrame.Position, closestPlayer.Character.HumanoidRootPart.Position)
+                end
+            end
+        end)
+        
+        showStatus("Aimbot Enabled", Color3.fromRGB(0, 255, 0))
+    else
+        _G.AimbotEnabled = false
+        showStatus("Aimbot Disabled", Color3.fromRGB(255, 100, 100))
+    end
+end
+
+-- Fly Function
+local function toggleFly()
+    flyEnabled = not flyEnabled
+    FlyToggle.Text = "Fly: " .. (flyEnabled and "ON" or "OFF")
+    FlyToggle.BackgroundColor3 = flyEnabled and Color3.fromRGB(0, 170, 0) or Color3.fromRGB(50, 50, 50)
+    
+    if flyEnabled then
+        _G.FlyEnabled = true
+        
+        spawn(function()
+            local Players = game:GetService("Players")
+            local LocalPlayer = Players.LocalPlayer
+            local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+            local Humanoid = Character:WaitForChild("Humanoid")
+            local HRP = Character:WaitForChild("HumanoidRootPart")
+            local UserInputService = game:GetService("UserInputService")
+            
+            -- Simple fly implementation
+            while _G.FlyEnabled and Character and Character.Parent and HRP and Humanoid and Humanoid.Health > 0 do
+                wait()
+                
+                Humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
+                
+                if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
+                    HRP.Velocity = Vector3.new(HRP.Velocity.X, 40, HRP.Velocity.Z)
+                elseif UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
+                    HRP.Velocity = Vector3.new(HRP.Velocity.X, -40, HRP.Velocity.Z)
+                else
+                    HRP.Velocity = Vector3.new(HRP.Velocity.X, 0, HRP.Velocity.Z)
+                end
+            end
+        end)
+        
+        showStatus("Fly Enabled", Color3.fromRGB(0, 255, 0))
+    else
+        _G.FlyEnabled = false
+        showStatus("Fly Disabled", Color3.fromRGB(255, 100, 100))
+    end
+end
+
+-- Noclip Function
+local function toggleNoclip()
+    noclipEnabled = not noclipEnabled
+    NoclipToggle.Text = "Noclip: " .. (noclipEnabled and "ON" or "OFF")
+    NoclipToggle.BackgroundColor3 = noclipEnabled and Color3.fromRGB(0, 170, 0) or Color3.fromRGB(50, 50, 50)
+    
+    if noclipEnabled then
+        _G.NoclipEnabled = true
+        
+        spawn(function()
+            local Players = game:GetService("Players")
+            local LocalPlayer = Players.LocalPlayer
+            
+            while _G.NoclipEnabled do
+                wait(0.1)
+                
+                local Character = LocalPlayer.Character
+                if Character then
+                    for _, part in pairs(Character:GetDescendants()) do
+                        if part:IsA("BasePart") then
+                            part.CanCollide = false
+                        end
+                    end
+                end
+            end
+        end)
+        
+        showStatus("Noclip Enabled", Color3.fromRGB(0, 255, 0))
+    else
+        _G.NoclipEnabled = false
+        
+        -- Reset collision
+        local Character = game.Players.LocalPlayer.Character
+        if Character then
+            for _, part in pairs(Character:GetDescendants()) do
+                if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then
+                    part.CanCollide = true
+                end
+            end
+        end
+        
+        showStatus("Noclip Disabled", Color3.fromRGB(255, 100, 100))
+    end
+end
+
+-- Unlock Gamepasses Function
+local function unlockGamepasses()
+    -- Simple gamepass unlock method
+    local success = false
+    
+    -- Method 1: Hook MarketplaceService
+    pcall(function()
+        local mt = getrawmetatable(game)
+        local old = mt.__namecall
+        setreadonly(mt, false)
+        
+        mt.__namecall = newcclosure(function(self, ...)
+            local method = getnamecallmethod()
+            local args = {...}
+            
+            if method == "UserOwnsGamePassAsync" or method == "PlayerOwnsAsset" then
+                return true
+            end
+            
+            return old(self, ...)
+        end)
+        
+        setreadonly(mt, true)
+        success = true
+    end)
+    
+    -- Method 2: Direct hook (simpler for JJSploit)
+    if not success then
+        pcall(function()
+            local MarketplaceService = game:GetService("MarketplaceService")
+            
+            local oldOwnsGamepass = MarketplaceService.UserOwnsGamePassAsync
+            MarketplaceService.UserOwnsGamePassAsync = function() return true end
+            
+            success = true
+        end)
+    end
+    
+    if success then
+        showStatus("Gamepasses Unlocked!", Color3.fromRGB(0, 255, 0))
+    else
+        showStatus("Failed to unlock gamepasses", Color3.fromRGB(255, 100, 100))
+    end
+end
+
+-- Kill Player Function
+local function killPlayer(playerName)
+    if playerName == "" then
+        showStatus("Please enter a player name", Color3.fromRGB(255, 100, 100))
+        return
+    end
+    
+    local Players = game:GetService("Players")
+    local targetPlayer = nil
+    
+    -- Find the player by name
+    for _, player in pairs(Players:GetPlayers()) do
+        if string.lower(player.Name):find(string.lower(playerName)) or 
+           (player.DisplayName and string.lower(player.DisplayName):find(string.lower(playerName))) then
+            targetPlayer = player
+            break
+        end
+    end
+    
+    if not targetPlayer then
+        showStatus("Player not found", Color3.fromRGB(255, 100, 100))
+        return
+    end
+    
+    -- Try to kill the player
+    local success = false
+    
+    -- Method 1: Teleport and kill
+    pcall(function()
+        local LocalPlayer = Players.LocalPlayer
+        local Character = LocalPlayer.Character
+        local TargetCharacter = targetPlayer.Character
+        
+        if Character and TargetCharacter then
+            local oldPos = Character.HumanoidRootPart.CFrame
+            
+            -- Try to teleport to target and kill them
+            for i = 1, 3 do
+                Character.HumanoidRootPart.CFrame = TargetCharacter.HumanoidRootPart.CFrame
+                wait(0.1)
+            end
+            
+            -- Return to original position
+            Character.HumanoidRootPart.CFrame = oldPos
+            success = true
+        end
+    end)
+    
+    -- Method 2: Try to use remote events
+    if not success then
+        pcall(function()
+            -- Try to find and use damage remotes
+            for _, obj in pairs(game:GetDescendants()) do
+                if obj:IsA("RemoteEvent") and (string.find(string.lower(obj.Name), "damage") or 
+                   string.find(string.lower(obj.Name), "kill") or string.find(string.lower(obj.Name), "hit")) then
+                    obj:FireServer(targetPlayer)
+                    success = true
+                    break
+                end
+            end
+        end)
+    end
+    
+    -- Method 3: Direct health modification
+    if not success then
+        pcall(function()
+            if targetPlayer.Character and targetPlayer.Character:FindFirstChild("Humanoid") then
+                targetPlayer.Character.Humanoid.Health = 0
+                success = true
+            end
+        end)
+    end
+    
+    if success then
+        showStatus("Attempted to kill " .. targetPlayer.Name, Color3.fromRGB(0, 255, 0))
+    else
+        showStatus("Failed to kill player", Color3.fromRGB(255, 100, 100))
+    end
+end
+
+-- Button click events
+SubmitKey.MouseButton1Click:Connect(function()
+    if KeyInput.Text == correctKey then
+        keyVerified = true
+        KeySystem.Visible = false
+        MainFrame.Visible = true
+    else
+        KeyStatus.Text = "Incorrect Key! Try Again."
+        KeyStatus.TextColor3 = Color3.fromRGB(255, 50, 50)
+        spawn(function()
+            wait(1)
+            KeyStatus.Text = "Enter Key to Access Enyk Executor"
+            KeyStatus.TextColor3 = Color3.fromRGB(255, 255, 255)
+        end)
+    end
+end)
+
+-- Close button events
+CloseButton.MouseButton1Click:Connect(function()
+    -- Disable all features
+    _G.AimbotEnabled = false
+    _G.FlyEnabled = false
+    _G.NoclipEnabled = false
+    
+    -- Close GUI
+    EnykExecutor:Destroy()
+end)
+
+KeySystemClose.MouseButton1Click:Connect(function()
+    EnykExecutor:Destroy()
+end)
+
+-- Feature buttons
+AimbotToggle.MouseButton1Click:Connect(toggleAimbot)
+FlyToggle.MouseButton1Click:Connect(toggleFly)
+NoclipToggle.MouseButton1Click:Connect(toggleNoclip)
+UnlockGamepassButton.MouseButton1Click:Connect(unlockGamepasses)
+KillPlayerButton.MouseButton1Click:Connect(function()
+    killPlayer(KillPlayerInput.Text)
+end)
